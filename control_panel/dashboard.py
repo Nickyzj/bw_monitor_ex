@@ -14,8 +14,9 @@ def monitorDataList():
 @dashboard.route('/<log_id>/<variante>')
 def monitorDataDetail(log_id, variante):
     item = findByIDAndVar(log_id, variante)
+    last_update = pretty_date(shareData.last_update)
     app.logger.info(item)
-    return render_template('monitor_detail.html', data = item)
+    return render_template('monitor_detail.html', data = item, last_update = last_update)
 
 @dashboard.route('/rfc_call/<rfc_type>/<log_id>/<variante>')
 def rfcCallChar(rfc_type, log_id, variante):
