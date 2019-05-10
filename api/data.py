@@ -39,7 +39,6 @@ def getStatus():
 
 @data.route('/execute/ajax_update')
 def ajaxUpdate():
-    print('ajax call')
     while shareData.rfcCall.status != 'ready':
         time.sleep(1)
     flash(str(shareData.rfcCall.returnMsg))

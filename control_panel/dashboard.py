@@ -8,7 +8,10 @@ dashboard = Blueprint('dashboard', __name__, template_folder='templates')
 
 @dashboard.route('/')
 def monitorDataList():
-    last_update = pretty_date(shareData.last_update)
+    if shareData.last_update:
+        last_update = pretty_date(shareData.last_update)
+    else:
+        last_update = 'Data uploading...'
     return render_template('monitor_list.html', data = shareData.monitorData, last_update = last_update)
 
 @dashboard.route('/<log_id>/<variante>')
@@ -54,4 +57,10 @@ def findByIDAndVar(log_id, variante):
 
 @dashboard.route('/last_update')
 def updateLastUpdate():
-    return pretty_date(shareData.last_update)
+    if not shareData.last_update:
+        return 'Data uploading...'
+    last_update = pretty_date(shareData.last_update)
+    if "minute" in last_update:
+        return "Data may be outdated. Click to Refresh."
+    else:
+        return pretty_date(shareData.last_update)
