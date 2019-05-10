@@ -1,8 +1,8 @@
-from flask import Flask, Blueprint, render_template, url_for, redirect, flash
+from flask import Blueprint, render_template, url_for, redirect, flash
 from flask import current_app as app
-from control_panel.model import RFCItem
-import control_panel.share_data as shareData
-from utils.time_format import pretty_date
+from app.control_panel.model import RFCItem
+import app.control_panel.share_data as shareData
+from app.utils.time_format import pretty_date
 
 dashboard = Blueprint('dashboard', __name__, template_folder='templates')
 
@@ -39,11 +39,11 @@ def rfcCallChar(rfc_type, log_id, variante):
             elif rfc_type == 'ignore':
                 rfcItem.rfcName = 'ZCHAIN_IGNORE_VARIANT'
             shareData.rfcCall.setRFCCall(rfcItem.serialize())
-            flash('RFC Call ' + rfcItem.rfcName + ' is executing.')
+            flash('RFC Call ' + rfcItem.rfcName + ' is executing.', 'info')
         else:
-            flash('The data is no longer available. Please refresh data.')
+            flash('The data is no longer available. Please refresh data.', 'warning')
     else:
-        flash('RFC call in process. Please try again later.')
+        flash('RFC call in process. Please try again later.', 'warning')
     return render_template('flash_message.html')
 
 def findByIDAndVar(log_id, variante):

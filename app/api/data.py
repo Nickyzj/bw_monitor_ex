@@ -3,7 +3,7 @@ import time
 from flask import Blueprint, request, jsonify, flash, render_template, current_app
 import json
 import datetime
-import control_panel.share_data as shareData
+import app.control_panel.share_data as shareData
 
 data = Blueprint('data', __name__, template_folder='templates')
 
@@ -41,5 +41,5 @@ def getStatus():
 def ajaxUpdate():
     while shareData.rfcCall.status != 'ready':
         time.sleep(1)
-    flash(str(shareData.rfcCall.returnMsg))
+    flash(str(shareData.rfcCall.returnMsg), 'success')
     return render_template('flash_message.html')
