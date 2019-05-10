@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, url_for, redirect, flash
 from flask import current_app as app
+from flask_login import login_required
+
 from app.control_panel.model import RFCItem
 import app.control_panel.share_data as shareData
 from app.utils.time_format import pretty_date
@@ -7,6 +9,7 @@ from app.utils.time_format import pretty_date
 dashboard = Blueprint('dashboard', __name__, template_folder='templates')
 
 @dashboard.route('/')
+@login_required
 def monitorDataList():
     if shareData.last_update:
         last_update = pretty_date(shareData.last_update)
@@ -15,6 +18,7 @@ def monitorDataList():
     return render_template('monitor_list.html', data = shareData.monitorData, last_update = last_update)
 
 @dashboard.route('/<log_id>/<variante>')
+@login_required
 def monitorDataDetail(log_id, variante):
     item = findByIDAndVar(log_id, variante)
     if item:
@@ -25,6 +29,7 @@ def monitorDataDetail(log_id, variante):
         return redirect(url_for('dashboard.monitorDataList'))
 
 @dashboard.route('/rfc_call/<rfc_type>/<log_id>/<variante>')
+@login_required
 def rfcCallChar(rfc_type, log_id, variante):
     if shareData.rfcCall.status == 'ready':
         result = findByIDAndVar(log_id, variante)

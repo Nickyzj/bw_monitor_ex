@@ -1,8 +1,10 @@
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 import logging
 
-from app.forms import RegistrationForm, LoginForm
+# from app.auth.forms import RegistrationForm, LoginForm
 
 formatter = logging.Formatter(
     '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
@@ -18,6 +20,10 @@ app.config['SECRET_KEY'] = 'super secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'auth.login'
+login_manager.login_message_category = 'info'
 
 app.logger.addHandler(file_handler)
 app.logger.addHandler(stream_handler)
