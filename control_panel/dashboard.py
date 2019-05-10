@@ -17,9 +17,12 @@ def monitorDataList():
 @dashboard.route('/<log_id>/<variante>')
 def monitorDataDetail(log_id, variante):
     item = findByIDAndVar(log_id, variante)
-    last_update = pretty_date(shareData.last_update)
-    app.logger.info(item)
-    return render_template('monitor_detail.html', data = item, last_update = last_update)
+    if item:
+        last_update = pretty_date(shareData.last_update)
+        app.logger.info(item)
+        return render_template('monitor_detail.html', data = item, last_update = last_update)
+    else:
+        return redirect(url_for('dashboard.monitorDataList'))
 
 @dashboard.route('/rfc_call/<rfc_type>/<log_id>/<variante>')
 def rfcCallChar(rfc_type, log_id, variante):
@@ -27,19 +30,18 @@ def rfcCallChar(rfc_type, log_id, variante):
         result = findByIDAndVar(log_id, variante)
         if result:
             rfcItem =  RFCItem(result)
+            if rfc_type == 'char':
+                rfcItem.rfcName = 'ZCHAIN_REMOVE_INVALID_CHAR'
+            elif rfc_type == 'activate':
+                rfcItem.rfcName = 'ZCHAIN_ACTIVATE_TR_DTP'
+            elif rfc_type == 'repeat':
+                rfcItem.rfcName = 'ZCHAIN_STEP_REPEAT'
+            elif rfc_type == 'ignore':
+                rfcItem.rfcName = 'ZCHAIN_IGNORE_VARIANT'
+            shareData.rfcCall.setRFCCall(rfcItem.serialize())
+            flash('RFC Call ' + rfcItem.rfcName + ' is executing.')
         else:
-            flash('Please refresh data.')
-        if rfc_type == 'char':
-            rfcItem.rfcName = 'ZCHAIN_REMOVE_INVALID_CHAR'
-        elif rfc_type == 'activate':
-            rfcItem.rfcName = 'ZCHAIN_ACTIVATE_TR_DTP'
-        elif rfc_type == 'repeat':
-            rfcItem.rfcName = 'ZCHAIN_STEP_REPEAT'
-        elif rfc_type == 'ignore':
-            rfcItem.rfcName = 'ZCHAIN_IGNORE_VARIANT'
-
-        shareData.rfcCall.setRFCCall(rfcItem.serialize())
-        flash('RFC Call ' + rfcItem.rfcName + ' is executing.')
+            flash('The data is no longer available. Please refresh data.')
     else:
         flash('RFC call in process. Please try again later.')
     return render_template('flash_message.html')
