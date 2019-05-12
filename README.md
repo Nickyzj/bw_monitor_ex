@@ -80,7 +80,7 @@ cd Flask_Blog/
 source venv/bin/activate
 
 pip install -r requriements.txt
-
+pip install -r requirements.txt  -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com
 
 (local machine)
 python console
@@ -115,7 +115,7 @@ python run.py
 
 or
 export FLASK_APP=run.py
-flask run -- host=0.0.0.0
+flask run --host=0.0.0.0
 
 -------------------------
 
