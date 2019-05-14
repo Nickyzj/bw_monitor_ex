@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% block body %}
     <div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom:5px">
-        {% for command in commands.keys() %}
+        {% for command, name in commands.items() %}
             <button type="button" class="btn btn-secondary"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="{{ name }}"
                     rfctype="{{ command }}"
                     log_id="{{ data['LOG_ID'] }}"
                     variante="{{ data['VARIANTE'] }}">
