@@ -4,6 +4,14 @@ monitorData = []
 # last_update = datetime.datetime.now()
 last_update = None
 
+rfcCallName = {
+    "fix char": "ZCHAIN_REMOVE_INVALID_CHAR",
+    "activate": "ZCHAIN_ACTIVATE_TR_DTP",
+    "repeat": "ZCHAIN_STEP_REPEAT",
+    "ignore": "ZCHAIN_IGNORE_VARIANT",
+    "skip": "ZCHAIN_SKIP_STEP",
+}
+
 class RFCCall:
 
     def __init__(self):
@@ -32,7 +40,7 @@ class RFCCall:
         self.returnMsg = '{"error": "Timeout"}'
         self.status = 'ready'
 
-    def setTimeout(self, sec = 30):
+    def setTimeout(self, sec = 60):
         start = datetime.datetime.now()
         print(start)
         while self.status != 'ready':

@@ -4,6 +4,7 @@ from flask_login import login_required
 
 from app.control_panel.model import RFCItem
 import app.control_panel.share_data as shareData
+from app.control_panel.share_data import rfcCallName
 from app.utils.time_format import pretty_date
 
 dashboard = Blueprint('dashboard', __name__, template_folder='templates')
@@ -24,27 +25,24 @@ def monitorDataDetail(log_id, variante):
     if item:
         last_update = pretty_date(shareData.last_update)
         app.logger.info(item)
-        return render_template('monitor_detail.html', data = item, last_update = last_update)
+        return render_template('monitor_detail.html', data = item, last_update = last_update, commands = rfcCallName)
     else:
         return redirect(url_for('dashboard.monitorDataList'))
 
 @dashboard.route('/rfc_call/<rfc_type>/<log_id>/<variante>')
 # @login_required
 def rfcCallChar(rfc_type, log_id, variante):
+    if not rfcCallName.get(rfc_type):
+        flash(f'RFC Call is not defined', 'error')
+        return render_template('flash_message.html')
     if shareData.rfcCall.status == 'ready':
         result = findByIDAndVar(log_id, variante)
         if result:
             rfcItem =  RFCItem(result)
-            if rfc_type == 'char':
-                rfcItem.rfcName = 'ZCHAIN_REMOVE_INVALID_CHAR'
-            elif rfc_type == 'activate':
-                rfcItem.rfcName = 'ZCHAIN_ACTIVATE_TR_DTP'
-            elif rfc_type == 'repeat':
-                rfcItem.rfcName = 'ZCHAIN_STEP_REPEAT'
-            elif rfc_type == 'ignore':
-                rfcItem.rfcName = 'ZCHAIN_IGNORE_VARIANT'
+            rfcItem.rfcName = rfcCallName[rfc_type]
             shareData.rfcCall.setRFCCall(rfcItem.serialize())
-            flash('RFC Call ' + rfcItem.rfcName + ' is executing.', 'info')
+            flash('RFC Call ' + rfcItem.rfcName + ' is being executed.', 'info')
+            print('RFC Call ' + rfcItem.rfcName + ' is being executed.')
         else:
             flash('The data is no longer available. Please refresh data.', 'warning')
     else:

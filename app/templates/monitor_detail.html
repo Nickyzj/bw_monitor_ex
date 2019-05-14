@@ -1,31 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
     <div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom:5px">
-        <button type="button" class="btn btn-secondary"
-                rfctype="char"
-                log_id="{{ data['LOG_ID'] }}"
-                variante="{{ data['VARIANTE'] }}">
-            FIX CHAR
-        </button>
-        <button type="button" class="btn btn-secondary"
-                rfctype="activate"
-                log_id="{{ data['LOG_ID'] }}"
-                variante="{{ data['VARIANTE'] }}">
-            ACTIVATE
-        </button>
-        <button type="button" class="btn btn-secondary"
-                rfctype="repeat"
-                log_id="{{ data['LOG_ID'] }}"
-                variante="{{ data['VARIANTE'] }}">
-            REPEAT
-        </button>
-    <button type="button" class="btn btn-secondary"
-                rfctype="ignore"
-                log_id="{{ data['LOG_ID'] }}"
-                variante="{{ data['VARIANTE'] }}">
-            IGNORE
-        </button>
+        {% for command in commands.keys() %}
+            <button type="button" class="btn btn-secondary"
+                    rfctype="{{ command }}"
+                    log_id="{{ data['LOG_ID'] }}"
+                    variante="{{ data['VARIANTE'] }}">
+                {{ command|upper }}
+            </button>
+        {% endfor %}
+
     </div>
+
     <div id="ajax_status">
 
     </div>
