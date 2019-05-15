@@ -5,30 +5,36 @@
             location.reload();
         }, 60000);
     </script>
-{#    <h5>Last Refresh: <span id="last_update"> {{ last_update }}</span></h5>#}
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-            <tr>
-                <th>LOG_ID</th>
-                <th>CHAIN_ID</th>
-                <th>VARIANTE</th>
-                <th>ACTUAL_STATE</th>
-                <th>FAILED_TIMES</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in data %}
+    {#    <h5>Last Refresh: <span id="last_update"> {{ last_update }}</span></h5>#}
+    {% if data|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
                 <tr>
-                    <td><a class="nav-link"
-                           href="/monitor/{{ item['LOG_ID'] }}/{{ item['VARIANTE'] }}">{{ item['LOG_ID'] }}</a></td>
-                    <td>{{ item['CHAIN_ID'] }}</td>
-                    <td>{{ item['VARIANTE'] }}</td>
-                    <td>{{ item['ACTUAL_STATE'] }}</td>
-                    <td>{{ item['FAILED_TIMES'] }}</td>
+                    <th>LOG_ID</th>
+                    <th>CHAIN_ID</th>
+                    <th>VARIANTE</th>
+                    <th>ACTUAL_STATE</th>
+                    <th>FAILED_TIMES</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        <td><a class="nav-link"
+                               href="/monitor/{{ item['LOG_ID'] }}/{{ item['VARIANTE'] }}">{{ item['LOG_ID'] }}</a></td>
+                        <td>{{ item['CHAIN_ID'] }}</td>
+                        <td>{{ item['VARIANTE'] }}</td>
+                        <td>{{ item['ACTUAL_STATE'] }}</td>
+                        <td>{{ item['FAILED_TIMES'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="container pt-2">
+            <a href="/monitor"> <img class="img-fluid" src="/static/img/coffee.jpg"></a>
+        </div>
+    {% endif %}
 {% endblock %}
