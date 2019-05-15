@@ -1,19 +1,31 @@
 <nav class="navbar  navbar-expand navbar-light bg-light">
-    <a class="navbar-brand" href="/monitor">PCB Chain Monitor</a>
+    <a class="navbar-brand" href="#">PCB Chain Monitor</a>
     <div class=" navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/monitor">Data Refresh: <span id="last_update"> {{ last_update }}</span></a>
-            </li>
             {#            <li class="nav-item">#}
             {#                <a class="nav-link" href="/monitor">Login</span></a>#}
             {#            </li>#}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Please choose: {{ env.name|upper }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">PCB</a>
+                    <a class="dropdown-item" href="/monitor/qcb">QCB</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">TBB</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/monitor/{{ env.name }}">Data Refresh: <span id="last_update"> {{ last_update }}</span></a>
+            </li>
         </ul>
         {% if current_user.is_authenticated %}
             <a class="btn btn-secondary" href="/logout">Logout</a>
-{#        {% else %}#}
-{#            <a class="btn btn-secondary" href="/login">Login</a>#}
-{#            <a class="btn btn-secondary" href="/register">Register</a>#}
+            {#        {% else %}#}
+            {#            <a class="btn btn-secondary" href="/login">Login</a>#}
+            {#            <a class="btn btn-secondary" href="/register">Register</a>#}
         {% endif %}
     </div>
 </nav>

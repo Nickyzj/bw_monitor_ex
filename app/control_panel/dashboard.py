@@ -3,47 +3,51 @@ from flask import current_app as app
 from flask_login import login_required
 
 from app.control_panel.model import RFCItem
-import app.control_panel.share_data as shareData
-from app.control_panel.share_data import rfcCallName, rfcCallDesc
+# import app.control_panel.share_data as shareData
+# from app.control_panel.share_data import rfcCallName, rfcCallDesc
+from app.control_panel.share_data import environments
 from app.utils.time_format import pretty_date
 
 dashboard = Blueprint('dashboard', __name__, template_folder='templates')
 
-@dashboard.route('/')
+@dashboard.route('/<env>')
 # @login_required
-def monitorDataList():
-    if shareData.last_update:
-        last_update = pretty_date(shareData.last_update)
+def monitorDataList(env):
+    if environments[env].last_update:
+        last_update = pretty_date(environments[env].last_update)
     else:
         last_update = 'Data uploading...'
-    return render_template('monitor_list.html', data = shareData.monitorData, last_update = last_update)
+    return render_template('monitor_list.html', env = environments[env], last_update = last_update)
 
-@dashboard.route('/<log_id>/<variante>')
+@dashboard.route('/<log_id>/<variante>/<env>')
 # @login_required
-def monitorDataDetail(log_id, variante):
-    item = findByIDAndVar(log_id, variante)
+def monitorDataDetail(log_id, variante, env):
+    item = findByIDAndVar(log_id, variante, env)
     if item:
-        last_update = pretty_date(shareData.last_update)
+        last_update = pretty_date(environments[env].last_update)
         app.logger.info(item)
-        return render_template('monitor_detail.html', data = item, last_update = last_update, commands = rfcCallDesc)
+        return render_template('monitor_detail.html',
+                               env = environments[env],
+                               data = item,
+                               last_update = last_update)
     else:
         return redirect(url_for('dashboard.monitorDataList'))
 
-@dashboard.route('/rfc_call/<rfc_type>/<log_id>/<variante>')
+@dashboard.route('/rfc_call/<rfc_type>/<log_id>/<variante>/<env>')
 # @login_required
-def rfcCallChar(rfc_type, log_id, variante):
-    if not rfcCallName.get(rfc_type):
+def rfcCallChar(rfc_type, log_id, variante, env):
+    if not environments[env].rfcCallName.get(rfc_type):
         flash(f'RFC Call is not defined', 'error')
         return render_template('flash_message.html')
-    if shareData.rfcCall.status == 'ready':
-        result = findByIDAndVar(log_id, variante)
+    if environments[env].rfcCall.status == 'ready':
+        result = findByIDAndVar(log_id, variante, env)
         if result:
             rfcItem =  RFCItem(result)
-            rfcItem.rfcName = rfcCallName[rfc_type]
-            try:
-                shareData.rfcCall.setRFCCall(rfcItem.serialize())
-            except KeyError as e:
-                print(e)
+            rfcItem.rfcName = environments[env].rfcCallName[rfc_type]
+            json_str = rfcItem.serialize()
+            if json_str:
+                environments[env].rfcCall.setRFCCall(json_str)
+            else:
                 flash('RFC Call key error.')
                 return render_template('flash_message.html')
             flash('Executing...', 'info')
@@ -54,9 +58,9 @@ def rfcCallChar(rfc_type, log_id, variante):
         flash('RFC call in process. Please try again later.', 'warning')
     return render_template('flash_message.html')
 
-def findByIDAndVar(log_id, variante):
+def findByIDAndVar(log_id, variante, env):
     result = None
-    for item in shareData.monitorData:
+    for item in environments[env].monitorData:
         if item['LOG_ID'] == log_id and item['VARIANTE'] == variante:
             result = item
             break
@@ -65,12 +69,12 @@ def findByIDAndVar(log_id, variante):
     else:
         return None
 
-@dashboard.route('/last_update')
-def updateLastUpdate():
-    if not shareData.last_update:
+@dashboard.route('/last_update/<env>')
+def updateLastUpdate(env):
+    if not environments[env].last_update:
         return 'Data uploading...'
-    last_update = pretty_date(shareData.last_update)
+    last_update = pretty_date(environments[env].last_update)
     if "minute" in last_update:
         return "Data may be outdated. Click to Refresh."
     else:
-        return pretty_date(shareData.last_update)
+        return pretty_date(environments[env].last_update)

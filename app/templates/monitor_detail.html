@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
     <div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom:5px">
-        {% for command, name in commands.items() %}
+        {% for command, name in env.rfcCallName.items() %}
             <button type="button" class="btn btn-secondary"
                     {#                    data-toggle="tooltip"#}
                     {#                    data-placement="bottom"#}
@@ -9,7 +9,8 @@
                     title="{{ name }}"
                     rfctype="{{ command }}"
                     log_id="{{ data['LOG_ID'] }}"
-                    variante="{{ data['VARIANTE'] }}">
+                    variante="{{ data['VARIANTE'] }}"
+                    env = {{ env.name }}>
                 {{ command|upper }}
             </button>
         {% endfor %}
@@ -39,4 +40,5 @@
             </tbody>
         </table>
     </div>
+    <div id="environment" env="{{ env.name }}"></div>
 {% endblock %}
