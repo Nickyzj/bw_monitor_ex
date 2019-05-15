@@ -13,7 +13,7 @@
                 <tr>
                     <th>LOG_ID</th>
                     <th>CHAIN_ID</th>
-                    <th>VARIANTE</th>
+                    <th>VARIANTE_TEXT</th>
                     <th>ACTUAL_STATE</th>
                     <th>FAILED_TIMES</th>
                 </tr>
@@ -24,7 +24,7 @@
                         <td><a class="nav-link"
                                href="/monitor/{{ item['LOG_ID'] }}/{{ item['VARIANTE'] }}">{{ item['LOG_ID'] }}</a></td>
                         <td>{{ item['CHAIN_ID'] }}</td>
-                        <td>{{ item['VARIANTE'] }}</td>
+                        <td>{{ item['VARIANTE_TEXT'] }}</td>
                         <td>{{ item['ACTUAL_STATE'] }}</td>
                         <td>{{ item['FAILED_TIMES'] }}</td>
                     </tr>
@@ -34,7 +34,7 @@
         </div>
     {% else %}
         <div class="container pt-2">
-            <a href="/monitor"> <img class="img-fluid" src="/static/img/coffee.jpg"></a>
+            <a href="/monitor"> <img class="img-fluid rounded float-left" src="/static/img/coffee.jpg"></a>
         </div>
     {% endif %}
 {% endblock %}

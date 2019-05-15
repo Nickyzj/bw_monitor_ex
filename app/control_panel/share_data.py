@@ -12,6 +12,14 @@ rfcCallName = {
     "skip": "ZCHAIN_SKIP_STEP",
 }
 
+rfcCallDesc = {
+    "fix char": "Remove invalid text from DSO New table.",
+    "activate": "Activate transformation and DTP.",
+    "repeat": "Repeat this step.",
+    "ignore": "Hide the variant from the list.",
+    "skip": "Skip this step in process chain.",
+}
+
 class RFCCall:
 
     def __init__(self):

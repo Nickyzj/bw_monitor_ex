@@ -4,7 +4,7 @@ from flask_login import login_required
 
 from app.control_panel.model import RFCItem
 import app.control_panel.share_data as shareData
-from app.control_panel.share_data import rfcCallName
+from app.control_panel.share_data import rfcCallName, rfcCallDesc
 from app.utils.time_format import pretty_date
 
 dashboard = Blueprint('dashboard', __name__, template_folder='templates')
@@ -25,7 +25,7 @@ def monitorDataDetail(log_id, variante):
     if item:
         last_update = pretty_date(shareData.last_update)
         app.logger.info(item)
-        return render_template('monitor_detail.html', data = item, last_update = last_update, commands = rfcCallName)
+        return render_template('monitor_detail.html', data = item, last_update = last_update, commands = rfcCallDesc)
     else:
         return redirect(url_for('dashboard.monitorDataList'))
 
@@ -40,8 +40,13 @@ def rfcCallChar(rfc_type, log_id, variante):
         if result:
             rfcItem =  RFCItem(result)
             rfcItem.rfcName = rfcCallName[rfc_type]
-            shareData.rfcCall.setRFCCall(rfcItem.serialize())
-            flash('RFC Call ' + rfcItem.rfcName + ' is being executed.', 'info')
+            try:
+                shareData.rfcCall.setRFCCall(rfcItem.serialize())
+            except KeyError as e:
+                print(e)
+                flash('RFC Call key error.')
+                return render_template('flash_message.html')
+            flash('Executing...', 'info')
             print('RFC Call ' + rfcItem.rfcName + ' is being executed.')
         else:
             flash('The data is no longer available. Please refresh data.', 'warning')
