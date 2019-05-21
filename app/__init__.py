@@ -32,7 +32,9 @@ app.logger.setLevel(logging.INFO)
 from app.api.data import data
 from app.auth.routes import auth
 from app.control_panel.dashboard import dashboard
+from app.log.log_controller import log_controller
 
 app.register_blueprint(data, url_prefix='/data')
 app.register_blueprint(dashboard, url_prefix='/monitor')
+app.register_blueprint(log_controller, url_prefix='/log')
 app.register_blueprint(auth)

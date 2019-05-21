@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th>ENVIRONMENT</th>
+                <th>CHAIN_AUTO_FIX</th>
+                <th>LOG_ID</th>
+                <th>CHAIN_ID</th>
+                <th>CHAIN_TEXT</th>
+                <th>TYPE</th>
+                <th>VARIANTE</th>
+                <th>VARIANTE_TEXT</th>
+                <th>INSTANCE</th>
+                <th>JOB_COUNT</th>
+                <th>ACTUAL_STATE</th>
+                <th>ACTIVE_TIME</th>
+                <th>BATCHDATE</th>
+                <th>BATCHTIME</th>
+                <th>SUGGEST_ACTION</th>
+                <th>FAILED_TIMES</th>
+                <th>FIX_DATE</th>
+                <th>FIX_TIME</th>
+{#                <th>FIX_ACTION</th>#}
+                <th>ERROR_KEY_WORD</th>
+                <th>STATUS</th>
+                <th>RETURN_MSG</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for log in logSet %}
+                <tr>
+                    <td>{{ log['ENVIRONMENT']|upper }}</td>
+                    <td>{{ log['CHAIN_AUTO_FIX'] }}</td>
+                    <td>{{ log['LOG_ID'] }}</td>
+                    <td>{{ log['CHAIN_ID'] }}</td>
+                    <td>{{ log['CHAIN_TEXT'] }}</td>
+                    <td>{{ log['TYPE'] }}</td>
+                    <td>{{ log['VARIANTE'] }}</td>
+                    <td>{{ log['VARIANTE_TEXT'] }}</td>
+                    <td>{{ log['INSTANCE'] }}</td>
+                    <td>{{ log['JOB_COUNT'] }}</td>
+                    <td>{{ log['ACTUAL_STATE'] }}</td>
+                    <td>{{ log['ACTIVE_TIME'] }}</td>
+                    <td>{{ log['BATCHDATE'] }}</td>
+                    <td>{{ log['BATCHTIME'] }}</td>
+                    <td>{{ log['SUGGEST_ACTION'] }}</td>
+                    <td>{{ log['FAILED_TIMES'] }}</td>
+                    <td>{{ log['FIX_DATE'] }}</td>
+                    <td>{{ log['FIX_TIME'] }}</td>
+{#                    <td>{{ log['FIX_ACTION'] }}</td>#}
+                    <td>{{ log['ERROR_KEY_WORD'] }}</td>
+                    <td>{{ log['STATUS'] }}</td>
+                    <td>{{ log['RETURN_MSG'] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -31,7 +31,7 @@ def monitorDataDetail(log_id, variante, env):
                                data = item,
                                last_update = last_update)
     else:
-        return redirect(url_for('dashboard.monitorDataList'))
+        return redirect(url_for('dashboard.monitorDataList', env = env))
 
 @dashboard.route('/rfc_call/<rfc_type>/<log_id>/<variante>/<env>')
 # @login_required
@@ -46,6 +46,8 @@ def rfcCallChar(rfc_type, log_id, variante, env):
             rfcItem.rfcName = environments[env].rfcCallName[rfc_type]
             json_str = rfcItem.serialize()
             if json_str:
+                environments[env].rfcCall.rfcItem = rfcItem
+                environments[env].rfcCall.env = env
                 environments[env].rfcCall.setRFCCall(json_str)
             else:
                 flash('RFC Call key error.')
@@ -71,10 +73,12 @@ def findByIDAndVar(log_id, variante, env):
 
 @dashboard.route('/last_update/<env>')
 def updateLastUpdate(env):
+    if env == 'undefined':
+        return ""
     if not environments[env].last_update:
         return 'Data uploading...'
     last_update = pretty_date(environments[env].last_update)
-    if "minute" in last_update:
+    if "minute" in last_update or "hours" in last_update or "days" in last_update:
         return "Data may be outdated. Click to Refresh."
     else:
         return pretty_date(environments[env].last_update)

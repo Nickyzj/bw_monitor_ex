@@ -1,4 +1,5 @@
 import datetime, time, threading
+from app.log.db_log import rfc_log_insert, rfc_log_execute, rfc_log_execute_complete
 
 class RFCItem:
 
@@ -117,10 +118,14 @@ class RFCCall:
         self.sendMsg = ''
         self.returnMsg = ''
         self.status = 'ready'
+        self.rfcItem = None
+        self.env = ''
+        self.lastrowid = 0
 
     def setRFCCall(self, sendMsg):
         self.sendMsg = sendMsg
         self.status = 'waiting'
+        self.lastrowid = rfc_log_insert(self.env, self.rfcItem, self.status)
         t = threading.Thread(target=self.setTimeout, args=())
         t.start()
 
@@ -128,11 +133,13 @@ class RFCCall:
         self.status = 'executing'
         sendMessage = self.sendMsg
         self.sendMsg = None
+        rfc_log_execute(self.lastrowid, self.status)
         return sendMessage
 
     def executeRFCCallComplete(self, returnMsg):
         self.returnMsg = returnMsg
         self.status = 'ready'
+        rfc_log_execute_complete(self.lastrowid, 'completed', returnMsg)
 
     def timeoutRFCCall(self):
         self.sendMsg = ''
@@ -150,6 +157,8 @@ class RFCCall:
                 return
             else:
                 time.sleep(1)
+
+
 
 class Enviornment:
 
