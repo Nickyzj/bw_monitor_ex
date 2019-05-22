@@ -21,7 +21,9 @@ $(document).ready(function () {
             },
             timout : 5000,
             error : function () {
-                $("#ajax_status").html("Timeout");
+                $("#ajax_status").html("<div class=\"alert alert-danger\" role=\"alert\">" +
+                    "                Error occurred. Please try again later." +
+                    "                </div>");
                 $('.btn-secondary').attr('disabled', false);
             }
         });

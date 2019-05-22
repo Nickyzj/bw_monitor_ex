@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, redirect, flash, abort
+from flask import Blueprint, render_template, url_for, redirect, flash, abort, request
 from flask import current_app as app
 from flask_login import login_required
 
@@ -50,6 +50,7 @@ def rfcCallChar(rfc_type, log_id, variante, env):
             if json_str:
                 environments[env].rfcCall.rfcItem = rfcItem
                 environments[env].rfcCall.env = env
+                environments[env].rfcCall.remote_addr = request.remote_addr
                 environments[env].rfcCall.setRFCCall(json_str)
             else:
                 flash('RFC Call key error.')

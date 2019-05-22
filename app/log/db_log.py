@@ -27,7 +27,7 @@ def write_db(query, args=()):
         if db:
             db.close()
 
-def set_rfc_call_query(env, rfcItem, status):
+def set_rfc_call_query(env, rfcItem, status, remote_addr):
     query = """
         insert into rfc_call_history (
             ENVIRONMENT,
@@ -50,8 +50,9 @@ def set_rfc_call_query(env, rfcItem, status):
             FIX_TIME,
             FIX_ACTION,
             ERROR_KEY_WORD,
-            STATUS) values (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            STATUS,
+            IP) values (
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
     """
 
@@ -75,12 +76,13 @@ def set_rfc_call_query(env, rfcItem, status):
             datetime.datetime.now().strftime("%H:%M:%S"),
             rfcItem.rfcName,
             rfcItem.ERROR_KEY_WORD,
-            status
+            status,
+            remote_addr
             )
     return query, args
 
-def rfc_log_insert(env, rfcItem, status):
-    query, args = set_rfc_call_query(env, rfcItem, status)
+def rfc_log_insert(env, rfcItem, status, remote_addr):
+    query, args = set_rfc_call_query(env, rfcItem, status, remote_addr)
     return write_db(query, args)
 
 def rfc_log_execute(lastrowid, status):

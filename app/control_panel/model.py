@@ -120,12 +120,13 @@ class RFCCall:
         self.status = 'ready'
         self.rfcItem = None
         self.env = ''
+        self.remote_addr = ''
         self.lastrowid = 0
 
     def setRFCCall(self, sendMsg):
         self.sendMsg = sendMsg
         self.status = 'waiting'
-        self.lastrowid = rfc_log_insert(self.env, self.rfcItem, self.status)
+        self.lastrowid = rfc_log_insert(self.env, self.rfcItem, self.status, self.remote_addr)
         t = threading.Thread(target=self.setTimeout, args=())
         t.start()
 
