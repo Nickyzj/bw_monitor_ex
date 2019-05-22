@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 def find_by_id_func():
-    driver = webdriver.Firefox()
+    driver = webdriver.Chrome()
     wait = WebDriverWait(driver, 10)
 
     driver.get('https://www.google.com/')
@@ -45,4 +45,4 @@ def find_by_id_func():
     driver.close()
 
 if __name__ == '__main__':
-    find_by_id()
+    find_by_id_func()
