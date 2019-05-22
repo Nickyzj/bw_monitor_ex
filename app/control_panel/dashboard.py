@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, redirect, flash
+from flask import Blueprint, render_template, url_for, redirect, flash, abort
 from flask import current_app as app
 from flask_login import login_required
 
@@ -13,6 +13,8 @@ dashboard = Blueprint('dashboard', __name__, template_folder='templates')
 @dashboard.route('/<env>')
 # @login_required
 def monitorDataList(env):
+    if environments.get(env) is None:
+        abort(404)
     if environments[env].last_update:
         last_update = pretty_date(environments[env].last_update)
     else:

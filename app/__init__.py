@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
@@ -38,3 +38,7 @@ app.register_blueprint(data, url_prefix='/data')
 app.register_blueprint(dashboard, url_prefix='/monitor')
 app.register_blueprint(log_controller, url_prefix='/log')
 app.register_blueprint(auth)
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return redirect('/monitor/pcb')
