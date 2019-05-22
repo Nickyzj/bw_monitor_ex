@@ -113,6 +113,22 @@ def findAllLog():
         if db:
             db.close()
 
+def findLogById(id):
+    db = None
+    cursor = None
+    try:
+        db = get_db()
+        cursor = get_cursor(db)
+        result = cursor.execute("select * from rfc_call_history where id = ?", (id,))
+        return result.fetchone()
+    except Exception as e:
+        print(e)
+    finally:
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()
+
 def init_db():
     db = None
     cursor = None

@@ -39,9 +39,22 @@ setInterval(function () {
            $('#last_update').text(result);
         }
     });
-}, 3000)
+}, 3000);
 
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
-})
+});
+
+$(document).ready(function () {
+    $('.log-modal').on('click', function () {
+        var url = $(this).attr('href');
+        req = $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (result) {
+                $('.modal-body').html(result);
+            }
+        });
+    });
+});

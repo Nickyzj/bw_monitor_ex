@@ -5,59 +5,57 @@
             <thead>
             <tr>
                 <th>ENVIRONMENT</th>
-                <th>CHAIN_AUTO_FIX</th>
                 <th>LOG_ID</th>
                 <th>CHAIN_ID</th>
                 <th>CHAIN_TEXT</th>
                 <th>TYPE</th>
                 <th>VARIANTE</th>
                 <th>VARIANTE_TEXT</th>
-                <th>INSTANCE</th>
-                <th>JOB_COUNT</th>
-                <th>ACTUAL_STATE</th>
-                <th>ACTIVE_TIME</th>
                 <th>BATCHDATE</th>
                 <th>BATCHTIME</th>
-                <th>SUGGEST_ACTION</th>
-                <th>FAILED_TIMES</th>
                 <th>FIX_DATE</th>
                 <th>FIX_TIME</th>
-{#                <th>FIX_ACTION</th>#}
-                <th>ERROR_KEY_WORD</th>
-                <th>STATUS</th>
-                <th>RETURN_MSG</th>
-                <th>IP</th>
             </tr>
             </thead>
             <tbody>
             {% for log in logSet %}
                 <tr>
                     <td>{{ log['ENVIRONMENT']|upper }}</td>
-                    <td>{{ log['CHAIN_AUTO_FIX'] }}</td>
-                    <td>{{ log['LOG_ID'] }}</td>
+                    <td>
+                        <a href="/log/{{ log['id'] }}" data-toggle="modal" data-target=".bd-example-modal-xl" class="log-modal">
+                            {{ log['LOG_ID'] }}
+                        </a>
+                    </td>
                     <td>{{ log['CHAIN_ID'] }}</td>
                     <td>{{ log['CHAIN_TEXT'] }}</td>
                     <td>{{ log['TYPE'] }}</td>
                     <td>{{ log['VARIANTE'] }}</td>
                     <td>{{ log['VARIANTE_TEXT'] }}</td>
-                    <td>{{ log['INSTANCE'] }}</td>
-                    <td>{{ log['JOB_COUNT'] }}</td>
-                    <td>{{ log['ACTUAL_STATE'] }}</td>
-                    <td>{{ log['ACTIVE_TIME'] }}</td>
                     <td>{{ log['BATCHDATE'] }}</td>
                     <td>{{ log['BATCHTIME'] }}</td>
-                    <td>{{ log['SUGGEST_ACTION'] }}</td>
-                    <td>{{ log['FAILED_TIMES'] }}</td>
                     <td>{{ log['FIX_DATE'] }}</td>
                     <td>{{ log['FIX_TIME'] }}</td>
-{#                    <td>{{ log['FIX_ACTION'] }}</td>#}
-                    <td>{{ log['ERROR_KEY_WORD'] }}</td>
-                    <td>{{ log['STATUS'] }}</td>
-                    <td>{{ log['RETURN_MSG'] }}</td>
-                    <td>{{ log['IP'] }}</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
