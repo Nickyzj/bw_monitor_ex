@@ -10,8 +10,10 @@ itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 pycparser==2.19
+selenium==3.141.0
 six==1.12.0
 SQLAlchemy==1.3.3
+urllib3==1.25.2
 waitress==1.3.0
 Werkzeug==0.15.2
 WTForms==2.2.1
