@@ -2,7 +2,7 @@ import time
 import unittest
 import find_by_id
 import HTMLTestRunner
-# import test_suit.HTMLTestRunner as HTMLTestRunner
+# import test_suite.HTMLTestRunner as HTMLTestRunner
 
 
 class MyUnitTest(unittest.TestCase):
