@@ -1,12 +1,14 @@
 from flask import Blueprint, render_template, url_for, redirect, flash, abort, request
 from flask import current_app as app
 from flask_login import login_required
+import copy
 
 from app.control_panel.model import RFCItem
 # import app.control_panel.share_data as shareData
 # from app.control_panel.share_data import rfcCallName, rfcCallDesc
 from app.control_panel.share_data import environments
 from app.utils.time_format import pretty_date
+from app.utils.datetime_utils import convert_str_to_date, convert_str_to_time
 
 dashboard = Blueprint('dashboard', __name__, template_folder='templates')
 
@@ -24,10 +26,16 @@ def monitorDataList(env):
 @dashboard.route('/<log_id>/<variante>/<env>')
 # @login_required
 def monitorDataDetail(log_id, variante, env):
-    item = findByIDAndVar(log_id, variante, env)
+    # item = findByIDAndVar(log_id, variante, env)
+    item = copy.deepcopy(findByIDAndVar(log_id, variante, env))
     if item:
         last_update = pretty_date(environments[env].last_update)
         app.logger.info(item)
+        item['BATCHDATE'] = convert_str_to_date(item['BATCHDATE'])
+        item['BATCHTIME'] = convert_str_to_time(item['BATCHTIME'])
+        item['LAST_FIX_DATE'] = convert_str_to_date(item['LAST_FIX_DATE'])
+        item['LAST_FIX_TIME'] = convert_str_to_time(item['LAST_FIX_TIME'])
+
         return render_template('monitor_detail.html',
                                env = environments[env],
                                data = item,

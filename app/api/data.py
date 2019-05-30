@@ -3,7 +3,10 @@ import time
 from flask import Blueprint, request, jsonify, flash, render_template, current_app
 import json
 import datetime
+
 from app.control_panel.share_data import environments
+from app.api.redis.rq_auto_fix import run_auto_fix
+
 
 data = Blueprint('data', __name__, template_folder='templates')
 
@@ -18,9 +21,10 @@ def upload(env):
     elif request.method == 'POST':
         content = request.json
         environments[env].monitorData = json.loads(content)
+        environments[env].init_monitor_list()
         environments[env].last_update = datetime.datetime.now()
+        run_auto_fix(environments[env])
         return 'success'
-
 
 @data.route('/execute/<env>')
 def execute(env):

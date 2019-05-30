@@ -10,7 +10,7 @@
                     rfctype="{{ command }}"
                     log_id="{{ data['LOG_ID'] }}"
                     variante="{{ data['VARIANTE'] }}"
-                    env = {{ env.name }}>
+                    env= {{ env.name }}>
                 {{ command|upper }}
             </button>
         {% endfor %}
@@ -30,7 +30,9 @@
             </thead>
             <tbody>
             {% for key, value in data.items() %}
-                {% if key != 'CHAIN_AUTO_FIX' %}
+{#                {% if key == 'CHAIN_AUTO_FIX' or key == 'JOB_COUNT' %}#}
+                {% if key in ['CHAIN_AUTO_FIX', 'JOB_COUNT', 'LAST_SUCC_LOG_DATE', 'LAST_SUCC_LOG_TIME'] %}
+                {% else %}
                     <tr>
                         <td>{{ key }}</td>
                         <td>{{ value }}</td>

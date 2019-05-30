@@ -1,6 +1,8 @@
 import datetime
 import sqlite3
 from app.config import DATABASE
+from app.utils.datetime_utils import get_tzlocal_now, convert_str_to_time, convert_str_to_date, convert_local_to_mst
+
 
 def get_db():
     db = sqlite3.connect(DATABASE)
@@ -68,12 +70,12 @@ def set_rfc_call_query(env, rfcItem, status, remote_addr):
             rfcItem.JOB_COUNT,
             rfcItem.ACTUAL_STATE,
             rfcItem.ACTIVE_TIME,
-            rfcItem.BATCHDATE,
-            rfcItem.BATCHTIME,
+            convert_str_to_date(rfcItem.BATCHDATE),
+            convert_str_to_time(rfcItem.BATCHTIME),
             rfcItem.SUGGEST_ACTION,
-            rfcItem.FAILED_TIMES,
-            datetime.datetime.now().strftime("%Y-%m-%d"),
-            datetime.datetime.now().strftime("%H:%M:%S"),
+            rfcItem.FAILED_TIMES_3_DAYS,
+            convert_local_to_mst(get_tzlocal_now()).strftime("%Y-%m-%d"),
+            convert_local_to_mst(get_tzlocal_now()).strftime("%H:%M:%S"),
             rfcItem.rfcName,
             rfcItem.ERROR_KEY_WORD,
             status,
