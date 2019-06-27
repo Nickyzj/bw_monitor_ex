@@ -26,3 +26,7 @@ from app.control_panel.model import Enviornment
 environments = {}
 environments['qcb'] = Enviornment('qcb')
 environments['pcb'] = Enviornment('pcb')
+
+environments['pb1'] = Enviornment('pb1')
+environments['pw1'] = Enviornment('pw1')
+

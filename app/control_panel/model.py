@@ -198,7 +198,7 @@ class RFCCall:
         self.returnMsg = '{"error": "Timeout"}'
         self.status = 'ready'
 
-    def setTimeout(self, sec=60):
+    def setTimeout(self, sec=120):
         start = datetime.datetime.now()
         print(start)
         while self.status != 'ready':

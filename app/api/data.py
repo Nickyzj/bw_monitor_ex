@@ -23,7 +23,8 @@ def upload(env):
         environments[env].monitorData = json.loads(content)
         environments[env].init_monitor_list()
         environments[env].last_update = datetime.datetime.now()
-        run_auto_fix(environments[env])
+        # Disable auto fix for now
+        # run_auto_fix(environments[env])
         return 'success'
 
 @data.route('/execute/<env>')
