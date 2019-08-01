@@ -15,7 +15,9 @@
                     <th>CHAIN_ID</th>
                     <th>VARIANTE_TEXT</th>
                     <th>ACTUAL_STATE</th>
-                    <th>FAILED_TIMES</th>
+                    <th>SUGGEST_ACTION</th>
+                    <th>BATCHDATE</th>
+                    <th>BATCHTIME</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,7 +28,9 @@
                         <td>{{ item.CHAIN_ID }}</td>
                         <td>{{ item.VARIANTE_TEXT }}</td>
                         <td>{{ item.ACTUAL_STATE }}</td>
-                        <td>{{ item.FAILED_TIMES }}</td>
+                        <td>{{ item.SUGGEST_ACTION }}</td>
+                        <td>{{ item.BATCHDATE }}</td>
+                        <td>{{ item.BATCHTIME }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
