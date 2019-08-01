@@ -1,7 +1,7 @@
 import datetime, time, threading
 import pytz
 from app.log.db_log import rfc_log_insert, rfc_log_execute, rfc_log_execute_complete
-
+from app.utils.datetime_utils import convert_str_to_date, convert_str_to_time
 
 class RFCItem:
 
@@ -32,6 +32,8 @@ class RFCItem:
         self.RECENT_FAILED_LOGS_IN_3_DAYS = item.get('RECENT_FAILED_LOGS_IN_3_DAYS')
         self.TIMESTAMP_OF_LAST_SUCC_LOG = item.get('TIMESTAMP_OF_LAST_SUCC_LOG')
         self.batch_date_time_display = self.date_time_formatter_phx(self.BATCHDATE, self.BATCHTIME)
+        self.BATCHDATE_display = convert_str_to_date(self.BATCHDATE)
+        self.BATCHTIME_display = convert_str_to_time(self.BATCHTIME)
         if self.TIMESTAMP_OF_LAST_SUCC_LOG is None or self.TIMESTAMP_OF_LAST_SUCC_LOG == '':
             self.timestamp_of_last_succ_log_format = None
         else:
